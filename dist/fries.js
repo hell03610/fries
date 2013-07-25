@@ -1,4 +1,26 @@
-(function () {
+var detail = {
+	
+
+	init: function(){
+		this.fetch();
+		this.draw();
+	},
+	fetch: function(){
+
+	},
+	draw: function(){
+		document.querySelector('.content').innerHTML = '<h3>Data fetched from server</h3>';
+	}
+};;var pageInit = function(e){
+	switch(e.detail.pageId){
+	//switch(document.querySelector('.page').id){
+		case 'page-detail': detail.init(); break;
+		case 'page-master': console.log(''); break;
+		default: break;
+	}
+
+};
+window.addEventListener("push",pageInit,false);;(function () {
 
   // Action overflow
   var checkActionOverflow = function () {
@@ -473,6 +495,7 @@
 
   var replaceContents = function (contents, container, transition, callback) {
     // If there's no set transition, just replace the contents of the container
+    transition = false;
     if (!transition) {
       container.innerHTML = contents.innerHTML;
     }
@@ -526,7 +549,8 @@
         timeout    : options.timeout,
         transition : options.transition
       }, options.id);
-      triggerStateChange();
+      var optionsStateChange = { pageId: data.contents.id };
+      triggerStateChange(optionsStateChange);
     });
 
     if (data.title) document.title = data.title;
@@ -567,7 +591,7 @@
     return data;
   };
 
-  var triggerStateChange = function () {
+  var triggerStateChange = function (options) {
     // Fix from https://github.com/maker/ratchet/issues/101 where CustomEvent is undefined
     if (typeof CustomEvent === 'undefined') {
       CustomEvent = function(type, eventInitDict) {
@@ -578,7 +602,7 @@
     }
 
     var e = new CustomEvent('push', {
-      detail: { state: getCached(doXHR.id) },
+      detail: { state: getCached(doXHR.id), pageId: options.pageId},
       bubbles: true,
       cancelable: true
     });
