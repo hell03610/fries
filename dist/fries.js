@@ -477,20 +477,21 @@ window.addEventListener("push",pageInit,false);;(function () {
     if (!doXHR.id) {
       cacheReplace({
         id         : +new Date(),
-        url        : options.url,
+        url        : window.location.href,
         title      : document.title,
         timeout    : options.timeout,
         transition : null
       });
     }
-
+    //We should save state before onsuccess overrides the doXHR id
+    if(!options.ignorePush) cachePush();
     if (options.timeout) {
       options._timeout = setTimeout(function () {  xhr.abort('timeout'); }, options.timeout);
     }
 
     xhr.send();
 
-    if (xhr.readyState && !options.ignorePush) cachePush();
+    //if (xhr.readyState && !options.ignorePush) cachePush();
   };
 
   var replaceContents = function (contents, container, transition, callback) {
