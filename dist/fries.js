@@ -597,7 +597,7 @@ window.addEventListener("push",pageInit,false);;(function () {
     if (typeof CustomEvent === 'undefined') {
       CustomEvent = function(type, eventInitDict) {
         var event = document.createEvent('CustomEvent');
-        event.initCustomEvent(type, eventInitDict.detail, eventInitDict.bubbles, eventInitDict.cancelable);
+        event.initCustomEvent(type, eventInitDict.bubbles, eventInitDict.cancelable, eventInitDict.detail);
         return event;
       };
     }
